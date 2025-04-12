@@ -1,5 +1,5 @@
 import React from 'react'
-import Cells from './cells'
+import Cells from './Cells'
 import boders from './boader'
 
 const SmallTic = ({board,isActive,oncellclick,winner,playertohover}) => {
