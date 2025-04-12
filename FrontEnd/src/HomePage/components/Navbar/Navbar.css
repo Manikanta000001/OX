@@ -1,0 +1,164 @@
+  .nav{
+    background-color: white;
+    margin: 10px 84px;
+    padding: 3px 8px;
+    box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.55);
+    border-radius: 5px;
+    color: black;
+  }
+  .nav .nav-menu{
+    width: 100%;
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: white;
+  }
+  
+  .nav-menu li{
+    height: 50px;
+  }
+  .menu-bar{
+    display: none;
+    color: black;
+  }
+  .menu-bar div i{
+    color: black;
+  }
+  
+  .nav-menu li a,
+  .nav-menu li div,
+  .nav-menu.sidebar li i{
+    height: 100%;
+    padding: 0 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .nav-menu li a{
+    text-decoration: none;
+    color: black;
+  }
+  .nav-menu li div i{
+    font-size: 18px;
+    
+  }
+  .nav-menu >  :not(:first-child):hover{
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    transition: all .2s ease-in-out;
+  }
+  .nav-menu li:first-child{
+    margin-right: auto;
+  }
+  
+  .nav-menu.sidebar{
+    position: fixed;
+    top: 0;
+    right: -100%;
+    height: 100vh;
+    width: 250px;
+    z-index: 999;
+    background-color: white;
+    box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    transition: right 0.5s ease-in-out;
+  }
+  .nav-menu.sidebar .leavebtn i{
+    color: black;
+  }
+  .nav-menu.sidebar.sidebar-active{
+    right: 0;
+    transition: right 0.3s ease-in-out;
+  }
+  .nav-menu.sidebar  >  :not(:first-child) {
+    width: 100%; 
+  }
+  .nav-menu.sidebar li:first-child{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .nav-logo{
+      font-family: Tilt Neon;
+      font-size: 28px;
+      font-weight: 500;
+  }
+
+/* pages info */
+
+  .container{
+    font-weight: 500;
+    font-size: 60px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    float: left;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding: none;
+    position: fixed;
+    object-fit: cover;
+    z-index: -1;
+    background-color: white;
+  }
+  .container div{
+    color: black;
+  }
+  .container .info-mess{
+    font-size: 20px;
+    width: 810px;
+    color: black;
+  }
+  .container .cm-mess
+  {
+    font-size: 40px;
+
+  }
+
+  @media (max-width:800px)
+  {
+    .hideonmobile{
+      display: none;
+    }
+    .nav{
+      margin: 10px 12px;
+    }
+    .menu-bar{
+      display: block;
+      color: black;
+    }
+    .nav-logo{
+      font-family: Tilt Neon;
+      font-size: 23px;
+    }
+    .container .info-mess{
+      width: 405px;
+    }
+  }
+
+  @media (max-width:413px)
+  {
+    .nav-menu.sidebar{
+      width: 100%;
+    }
+    .nav-logo{
+      font-family: Tilt Neon;
+      font-size: 20px;
+    }
+    .nav{
+      margin: 10px 9px;
+    }
+    .container .info-mess{
+      width: 300px;
+    }
+  }

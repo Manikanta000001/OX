@@ -1,0 +1,173 @@
+.play-pause{
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border: 1px solid red;
+    border-radius: 20%;
+    transition: all 0.3s ease;
+}
+.play-pause i{
+    color: white;
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.hero{
+    margin: 0px 120px;
+    margin-top: 9%;
+}
+.hero-text{
+  color: white;
+  font-size: 100px;
+  font-weight: 500;
+  line-height: 100px;
+}
+.hero-explore
+{
+  background: transparent;
+  width: 350px;
+  color: white;
+  border-radius: 6px;
+  margin-top: 28px;
+  padding: 10px 20px 10px 8px;
+}
+
+.hero-text,p{
+  color: white;
+}
+
+.hero-explore .input-box
+{
+position:relative;
+width: 100%;
+height: 45px;
+margin: 10px 0 ;
+}
+
+.input-box input
+{
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  border: 2px solid white;
+  border-radius:  40px; 
+  font-size: 16px;
+  color: #262626;
+  border: 1px solid hsl(0, 0%,55%);
+  transition: all 0.3s ease-in-out;
+  padding-left: 14px;
+  background: white;
+}
+
+.input-box ::placeholder
+{
+  color:hsl(0, 0%,55%);
+}
+.input-box i
+{
+  position: absolute;
+  top: 50%;
+  left: 93%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: hsl(0, 0%,55%);
+}
+
+.hero-explore .btn{
+  width:100%;
+  height: 35px;
+  border: none;
+  outline: none;
+  border-radius: 40px;
+  box-shadow: 0 0 10px rgb(0, 0, 0,.1);
+  cursor: pointer;
+  font-size: 16px;
+  color: white;
+  font-weight: 600;
+  background-color: orangered;
+  margin-left: 8px;
+  text-align: center;
+  padding: 0;
+}
+
+.input-box input:hover
+{
+border-color: #262626;
+}
+
+.hero-dot-play{
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+}
+.hero-dots{
+    display: flex;
+    align-items: center;
+    gap: 23px;
+    list-style: none;
+    margin-left: 13px;
+}
+.hero-dot{
+    width: 15px ;
+    height: 15px;
+    background-color: white;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.hero-dot.orange{
+    background-color: red;
+}
+.hero-play{
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+.hero-play p{
+    color: white;
+    font-size: 19px;
+}
+
+@media  (max-width: 800px) {
+  .hero{
+      margin: 0px 15px;
+      margin-top: 169px;
+  }
+  .hero-text{
+    font-size: 80px;
+    line-height: 90px;
+  }
+  .hero-explore{
+    margin-top: 15px;
+    padding: 10px 20px 10px 0px;
+  }
+  .hero-dot-play{
+    margin: 0px 20px;
+  }
+  }
+
+ @media  (max-width: 413px){
+    .hero{
+      margin: 0px 10px;
+      margin-top: 259px;
+  }
+  .hero-text{
+    font-size: 50px;
+    line-height: 50px;
+    margin-left: 2%;
+  }
+  .hero-explore{
+    margin-top: 10px;
+    padding: 10px 20px 10px 0px;
+  }
+  .hero-dot-play{
+    margin: 0px 2px;
+    margin-top: 11%;
+  }
+  }
+
+

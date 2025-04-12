@@ -1,0 +1,121 @@
+
+/* stike css */
+.strike{
+    position: absolute;
+    background-color: var(--strike-line);
+    opacity: 0;
+  }
+  .strike-row-1{
+    width: 97%;
+    height: 2px;
+    top: 16%;
+    left: 1.5%;
+  }
+  .strike-row-2{
+    width: 97%;
+    height: 2px;
+    top: 49.4%;
+    left: 1.5%;
+  }
+  .strike-row-3{
+    width: 97%;
+    height: 2px;
+    top: 83%;
+    left: 1.5%;
+  }
+  .strike-column-1{
+    /* if no boarder then 100% and no top*/
+    height: 97%;
+    width: 2px;
+    top: 1.5%;
+    left: 16%;
+  }
+  .strike-column-2{
+    height: 97%;
+    width: 2px;
+    top: 1.5%;
+    left: 49.4%;
+  }
+  .strike-column-3{
+    height: 97%;
+    width: 2px;
+    top: 1.5%;
+    left: 83%;
+  }
+  .strike-diagonal-1{
+    width: 90%;
+    height: 2px;
+    top: 5%;
+    left: 5%;
+    transform: skewY(45deg);
+    transform-origin: top left;
+  }
+  .strike-diagonal-2{
+  
+    width: 90%;
+    height: 2px;
+    bottom: 5%;
+    left: 5%;
+    transform: skewY(-45deg);
+    transform-origin: left bottom;
+  }
+  
+  /* Row Animations */
+  @keyframes expandWidth {
+    from {
+      width: 0;
+      opacity: 1;
+    }
+    to {
+      width: 97%;
+      opacity: 1;
+    }
+  }
+  
+  .strike-row-1, 
+  .strike-row-2, 
+  .strike-row-3 {
+    width: 0;
+    height: 4px;
+    border-radius: 50px;
+
+    animation: expandWidth 0.6s linear forwards;
+  }
+  
+  /* Column Animations */
+  @keyframes expandHeight {
+    from {
+      height: 0;
+      opacity: 1;
+    }
+    to {
+      height: 97%;
+      opacity: 1;
+    }
+  }
+  .strike-column-1, 
+  .strike-column-2, 
+  .strike-column-3 {
+    width: 4px;
+    height: 0;
+    border-radius: 50px;
+    animation: expandHeight 0.6s linear forwards;
+  }
+  /* Diagonal Animations */
+@keyframes expandDiagonal {
+    from {
+        width: 0;
+        opacity: 1;
+    }
+    to {
+        width: 90%; 
+        opacity: 1;
+    }
+}
+.strike-diagonal-1,
+.strike-diagonal-2 {
+    width: 0;
+    height: 4px;
+    border-radius: 50px;
+    animation: expandDiagonal 0.6s linear forwards;
+}
