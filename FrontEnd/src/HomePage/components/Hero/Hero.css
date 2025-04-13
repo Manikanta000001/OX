@@ -169,10 +169,20 @@ border-color: #262626;
     margin-top: 11%;
   }
   }
+
+  /* for the fridge screen */
   @media  (max-width: 800px) and (min-height:1226px){
     .hero{
    
       margin-top: 90%;
+    }
+  }
+
+  /* for the tv screen */
+  @media  (min-width: 1920px) and (min-height:945px){
+    .hero{
+      margin-top: 18%;
+
     }
   }
 
