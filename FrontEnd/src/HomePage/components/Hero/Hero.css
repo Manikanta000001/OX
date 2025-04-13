@@ -169,7 +169,7 @@ border-color: #262626;
     margin-top: 11%;
   }
   }
-  @media  (max-width: 800px) and (min-height:1229px){
+  @media  (max-width: 800px) and (min-height:1226px){
     .hero{
    
       margin-top: 90%;
