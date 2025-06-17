@@ -12,7 +12,7 @@ function Homepage() {
     
       {text1:'Dare  !',text2:'to rule'},
       {text1:'Master',text2:'for the crown'},
-      {text1:'Seize',text2:'for the win'}
+      {text1:'Seize',text2:'the win!'}
     
   ]
   const [herocount,sethercount]=useState(2)
