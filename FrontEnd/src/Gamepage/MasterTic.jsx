@@ -138,9 +138,13 @@ const MasterTic = () => {
       }, 3500);
 
     })
-    socket.on("playerdisconnected",()=>{
-      toast.info("Player Disconnected")
-    })
+    // socket.on("playerdisconnected",()=>{
+    //   toast.info("Player Disconnected")
+    // })
+
+    socket.on("playerdisconnected",(username)=>{
+  toast.info(`${username} Disconnected`);
+})
 
     //cleaing the events 
     

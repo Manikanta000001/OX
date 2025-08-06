@@ -20,12 +20,25 @@ app.get('/',(req,res)=>{
 let Games={};
 
 io.on('connection',(socket)=>{
-    ('user connected: ',socket.id)
+    console.log('user connected: ',socket.id)
 
     // join the game 
     socket.on('join-game',({roomid,username})=>{
+
+        const game = Games[roomid];
         
+        // 1️⃣ Check room capacity BEFORE joining
+    if (game && game.players.length >= 2) {
+      socket.emit('roomfull');
+      return; 
+    }
+
         socket.join(roomid);
+
+        socket.data.roomid = roomid;
+        socket.data.username = username;
+
+
         //if no room id exists 
         if(!Games[roomid]){
             Games[roomid]={
@@ -39,22 +52,34 @@ io.on('connection',(socket)=>{
         }
 
         //if room exits
+
+          // 4️⃣ Add player to game
+        Games[roomid].players.push({ id: socket.id, userNickname: username });
+
+    // 5️⃣ Notify clients
+        if (Games[roomid].players.length === 2) {
+        io.to(roomid).emit('gamestarted');
+        }
+        io.to(roomid).emit('Gamestate', Games[roomid]);
+
+       // need to checked before removing
        
-        if(Games[roomid].players.length<2)
-        {
-            Games[roomid].players.push({id:socket.id,userNickname:username})
-            if(Games[roomid].players.length===2)
-            {
-                io.to(roomid).emit('gamestarted')
-            }
-        }
-        else{
-            socket.emit('roomfull')
-        }
+        // if(Games[roomid].players.length<2)
+        // {
+        //     Games[roomid].players.push({id:socket.id,userNickname:username})
+        //     if(Games[roomid].players.length===2)
+        //     {
+        //         io.to(roomid).emit('gamestarted')
+        //     }
+        // }
+        // else{
+        //     socket.emit('roomfull')
+        // }
         
-        io.to(roomid).emit('Gamestate',Games[roomid]) //not sending to loading page
+        // io.to(roomid).emit('Gamestate',Games[roomid]) //not sending to loading page
 
     })
+    
     socket.on('requestInitialGamestate',(roomid)=>{
         io.to(roomid).emit('Gamestate',Games[roomid]) //sending gamesate to Gamepage
         
@@ -63,6 +88,8 @@ io.on('connection',(socket)=>{
     socket.on('move',({roomid,boardIndex,cellIndex})=>{
         let game =Games[roomid];
         if(!game||game.bigwinner||game.boards[boardIndex].cells[cellIndex]!==null) return //preventing same cell clicks
+
+        // need to be checked before changes
 
         if(socket.id!==game.players[game.currentplayer==='X'?0:1].id) return // preventing extra moves
 
@@ -121,12 +148,15 @@ io.on('connection',(socket)=>{
         socket.to(roomid).emit('rematchRequest')
     })
     socket.on('AcceptRematch',(roomid)=>{
-       Games[roomid].boards=Array(9).fill(null).map(()=>({cells:Array(9).fill(null),winner:null}))
-       Games[roomid].currentplayer='X'
-       Games[roomid].activeBoard=null
-       Games[roomid].bigwinner=null
-       Games[roomid].strikeline=null
-       io.to(roomid).emit('rematchAccepted')
+        if(Games[roomid]){
+
+            Games[roomid].boards=Array(9).fill(null).map(()=>({cells:Array(9).fill(null),winner:null}))
+            Games[roomid].currentplayer='X'
+            Games[roomid].activeBoard=null
+            Games[roomid].bigwinner=null
+            Games[roomid].strikeline=null
+            io.to(roomid).emit('rematchAccepted')
+        }
 
     })
     //someone rejected -- both navigated to homepage -- removes roomid
@@ -151,29 +181,48 @@ io.on('connection',(socket)=>{
     
 
     socket.on('disconnect',()=>{
-        for(const roomid in Games)
-        {
-            const room =Games[roomid]
-            Games[roomid].players=Games[roomid].players.filter((player)=>player.id!==socket.id)// identifing the players who are not disconnected
 
-            if(Games[roomid].players.length<2){
+        // need to be checked before updation
 
-                socket.to(roomid).emit('playerdisconnected',()=>{
-                  if(Games[roomid]){
-                    Games[roomid].boards=Array(9).fill(null).map(()=>({cells:Array(9).fill(null),winner:null}))
-                    Games[roomid].currentplayer='X'
-                    Games[roomid].activeBoard=null
-                    Games[roomid].bigwinner=null
-                    Games[roomid].strikeline=null
-                    io.to(roomid).emit("Gamestate",Games[roomid])
-                  }
-                })
-                if(Games[roomid].players.length===0){
-                delete Games[roomid]
-                break;
-                }
-            }
-        }
+        // for(const roomid in Games)
+        // {
+        //     const room =Games[roomid]
+        //     Games[roomid].players=Games[roomid].players.filter((player)=>player.id!==socket.id)// identifing the players who are not disconnected
+
+        //     if(Games[roomid].players.length<2){
+
+        //         socket.to(roomid).emit('playerdisconnected',()=>{
+        //           if(Games[roomid]){
+        //             Games[roomid].boards=Array(9).fill(null).map(()=>({cells:Array(9).fill(null),winner:null}))
+        //             Games[roomid].currentplayer='X'
+        //             Games[roomid].activeBoard=null
+        //             Games[roomid].bigwinner=null
+        //             Games[roomid].strikeline=null
+        //             io.to(roomid).emit("Gamestate",Games[roomid])
+        //           }
+        //         })
+        //         if(Games[roomid].players.length===0){
+        //         delete Games[roomid]
+        //         break;
+        //         }
+        //     }
+        // }
+
+        // need to be checked 
+        
+        const roomid = socket.data.roomid;
+    if (!roomid || !Games[roomid]) return;
+
+    // Remove the player from game
+    Games[roomid].players = Games[roomid].players.filter(p => p.id !== socket.id);
+
+    // Notify the other player
+    socket.to(roomid).emit('playerdisconnected', socket.data.username);
+
+    // If room empty, delete it
+    if (Games[roomid].players.length === 0) {
+      delete Games[roomid];
+    }
 
                
            
