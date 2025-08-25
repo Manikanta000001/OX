@@ -191,6 +191,7 @@ useEffect(()=>{
     {/* show waiting for opponets response */}
     {
       rematcRequested && <div className='mini-loader'><p>waiting for opponent to accept</p> <div class="loader"></div></div> 
+
     }
     <button className='leavebtn' onClick={handleleave}><span className='hideonmobile hideforlargetabs'>Leave</span> <i class="fa-solid fa-arrow-right-from-bracket"></i></button>
 
