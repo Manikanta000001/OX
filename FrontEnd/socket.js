@@ -25,6 +25,6 @@ socket.on('disconnect', (reason) => {
 });
 
 function showReconnectMessage() {
-  document.getElementById('status').textContent = 'Connection lost, reconnecting...';
+  console.log("Anna disconneted !")
 }
 export default socket;

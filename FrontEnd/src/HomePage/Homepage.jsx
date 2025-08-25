@@ -20,7 +20,7 @@ function Homepage() {
   const [username,setusername]=useState('')
   const [roomid,setroomid]=useState('')
   const navigate =useNavigate()
-  console.log("Hey nenne ")
+ 
 
 //handling the join request
 
