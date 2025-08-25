@@ -7,7 +7,7 @@ import NavBarlayout from './HomePage/NavLayout/NavBarlayout'
 import About from './HomePage/Pages/About'
 import Explore from './HomePage/Pages/Explore'
 import Contacts from './HomePage/Pages/Contacts'
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from '@vercel/analytics/react';
 
 
 function App() {
