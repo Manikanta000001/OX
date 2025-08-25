@@ -134,6 +134,7 @@ io.on('connection',(socket)=>{
       }
       game.activeBoard=game.boards[cellIndex].winner?null:cellIndex;
       game.currentplayer=game.currentplayer==="X"?"O":"X";
+      console.log(game)
 
 
       io.to(roomid).emit("Gamestate",game)
