@@ -1,4 +1,6 @@
 import {io} from 'socket.io-client'
+import {  toast } from 'react-toastify';
+
 // const socket=io('https://ox-3gl4.onrender.com',{transports:['websocket']})
 
 const socket = io('https://ox-3gl4.onrender.com', {
@@ -14,6 +16,9 @@ const socket = io('https://ox-3gl4.onrender.com', {
 // Handle connection
 socket.on('connect', () => {
   console.log('Connected to server');
+  socket.emit('requestInitialGamestate',roomid)
+  toast.info("Trying to Reconnect!")
+
   // Request game state sync on connect/reconnect
 
 });
@@ -25,6 +30,6 @@ socket.on('disconnect', (reason) => {
 });
 
 function showReconnectMessage() {
-  console.log("Anna disconneted !")
+  toast.info(`Anna disconneted !`)
 }
 export default socket;
