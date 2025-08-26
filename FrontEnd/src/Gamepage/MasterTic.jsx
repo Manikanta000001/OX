@@ -151,7 +151,6 @@ const MasterTic = () => {
 
 socket.on('connect', () => {
   console.log('Connected to server');
-  socket.emit('requestInitialGamestate',roomid)
   toast.info("Trying to Reconnect!")
 
   // Request game state sync on connect/reconnect
