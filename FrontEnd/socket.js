@@ -13,23 +13,5 @@ const socket = io('https://ox-3gl4.onrender.com', {
   timeout: 20000                        // Increase timeout for slow networks
 });
 
-// Handle connection
-socket.on('connect', () => {
-  console.log('Connected to server');
-  socket.emit('requestInitialGamestate',roomid)
-  toast.info("Trying to Reconnect!")
 
-  // Request game state sync on connect/reconnect
-
-});
-
-socket.on('disconnect', (reason) => {
-  console.log('Disconnected:', reason);
-  // Show a message to the player, e.g., "Connection lost, reconnecting..."
-  showReconnectMessage();
-});
-
-function showReconnectMessage() {
-  toast.info(`Anna disconneted !`)
-}
 export default socket;

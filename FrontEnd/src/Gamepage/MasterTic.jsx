@@ -146,6 +146,27 @@ const MasterTic = () => {
   toast.info(`${username} Disconnected`);
 })
 
+
+// Handle connection
+socket.on('connect', () => {
+  console.log('Connected to server');
+  socket.emit('requestInitialGamestate',roomid)
+  toast.info("Trying to Reconnect!")
+
+  // Request game state sync on connect/reconnect
+
+});
+
+socket.on('disconnect', (reason) => {
+  console.log('Disconnected:', reason);
+  // Show a message to the player, e.g., "Connection lost, reconnecting..."
+  showReconnectMessage();
+});
+
+function showReconnectMessage() {
+  toast.info(`Anna disconneted !`)
+}
+
     //cleaing the events 
     
     return ()=>{
