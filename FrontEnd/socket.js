@@ -16,7 +16,7 @@ const socket = io('https://ox-3gl4.onrender.com', {
 
 socket.on('connect', () => {
   console.log('Connected to server');
-  toast.info("Trying to Reconnect!")
+  
 
   // Request game state sync on connect/reconnect
 
