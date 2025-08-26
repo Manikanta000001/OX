@@ -148,6 +148,7 @@ const MasterTic = () => {
 
 
 // Handle connection
+
 socket.on('connect', () => {
   console.log('Connected to server');
   socket.emit('requestInitialGamestate',roomid)
