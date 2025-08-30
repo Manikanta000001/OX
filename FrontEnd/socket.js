@@ -11,3 +11,4 @@ const socket = io("https://ox-3gl4.onrender.com", {
   reconnectionAttempts: 5,   // number of attempts
   reconnectionDelay: 1000,   // delay between attempts (ms)
 });
+export default socket;
