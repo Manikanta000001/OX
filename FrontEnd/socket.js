@@ -1,5 +1,4 @@
 // import {io} from 'socket.io-client'
-import {  toast } from 'react-toastify';
 
 
 // const socket=io('https://ox-3gl4.onrender.com',{transports:['websocket']})
@@ -11,7 +10,7 @@ let socket;
 export const getSocket = () => {
   if (!socket) {
     socket = io("https://ox-3gl4.onrender.com", {
-        withCredentials: true, 
+        transports: ["polling", "websocket"], // websocket first, fallback polling
       autoConnect: false,
     });
   }

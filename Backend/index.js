@@ -12,8 +12,9 @@ const PORT = process.env.PORT || "3001";
 const server = http.createServer(app)
 app.use(cors())
 const io = new Server(server, {
+  // https://oxfrontend.vercel.app/
   cors: {
-    origin: "https://oxfrontend.vercel.app/",
+    origin: "*",
     methods: ['GET', 'POST']
   }
 })
