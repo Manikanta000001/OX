@@ -11,7 +11,7 @@ let socket;
 export const getSocket = () => {
   if (!socket) {
     socket = io("https://ox-3gl4.onrender.com", {
-        transports: ["websocket", "polling"], // websocket first, fallback polling
+        withCredentials: true, 
       autoConnect: false,
     });
   }
