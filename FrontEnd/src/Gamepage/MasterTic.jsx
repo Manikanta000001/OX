@@ -12,7 +12,7 @@ import tileclickasset from "../Audio/click.mp3";
 import Whonext from "./components/Whonext";
 import Model from "./components/PopUpModel/model.jsx";
 import "./MasterTic.css";
-import { getSocket } from "../../socket";
+import socket from "../../socket";
 import useLocalStorage from "use-local-storage";
 
 const tileclicksound = new Audio(tileclickasset);

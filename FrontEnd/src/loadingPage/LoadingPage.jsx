@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams,useNavigate } from 'react-router-dom'
 import {  toast } from 'react-toastify';
 import netflixloader from './LoadingAssests/netflixloader.mp4'
-import {getSocket} from '../../socket'
+import socket from '../../socket'
 import './LoadingPage.css'
 
 const LoadingPage = () => {
@@ -14,7 +14,6 @@ const LoadingPage = () => {
   // initial join request to sever
   
 useEffect(()=>{
-socket.connect();
 
 socket.emit('join-game',{roomid,username})
 
