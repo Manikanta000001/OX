@@ -12,7 +12,7 @@ import tileclickasset from "../Audio/click.mp3";
 import Whonext from "./components/Whonext";
 import Model from "./components/PopUpModel/model.jsx";
 import "./MasterTic.css";
-import socket from "../../socket.js";
+import { getSocket } from "../../socket";
 import useLocalStorage from "use-local-storage";
 
 const tileclicksound = new Audio(tileclickasset);
@@ -20,6 +20,7 @@ tileclicksound.volume = 0.3;
 
 const MasterTic = () => {
   const { roomid, username } = useParams();
+  const socket = getSocket();
   const [boards, setboards] = useState([]);
   const [currentplayer, setcurrentplayer] = useState("X");
   const [activeBoard, setactiveBoard] = useState(null);
@@ -102,6 +103,44 @@ const MasterTic = () => {
     socket.emit("requestInitialGamestate", roomid);
 
     //getting the gamestate from server
+    socket.on("connect", () => {
+      console.log("Connected to server");
+
+      const savedUsername = localStorage.getItem("oxduel_username");
+      const savedRoom = localStorage.getItem("oxduel_room");
+
+      if (savedUsername && savedRoom) {
+        console.log("join using connect!");
+        socket.emit("join-room", {
+          username: savedUsername,
+          room: savedRoom,
+        });
+      }
+
+      // Request game state sync on connect/reconnect
+    });
+    socket.on("reconnect", () => {
+      console.log("reconnected to server");
+
+      const savedUsername = localStorage.getItem("oxduel_username");
+      const savedRoom = localStorage.getItem("oxduel_room");
+
+      if (savedUsername && savedRoom) {
+        console.log("joined using reconnect");
+        socket.emit("join-room", {
+          username: savedUsername,
+          room: savedRoom,
+        });
+      }
+
+      // Request game state sync on connect/reconnect
+    });
+
+    socket.on("disconnect", (reason) => {
+      console.log("Disconnected:", reason);
+      // Show a message to the player, e.g., "Connection lost, reconnecting..."
+      toast.info(`Anna disconneted !`)
+    });
 
     socket.on("Gamestate", (gamestate) => {
       setboards(gamestate.boards);
@@ -161,21 +200,6 @@ const MasterTic = () => {
     socket.on("playerdisconnected", (players, gamestate) => {
       toast.info(`${players.userNickname} Disconnected`);
       setgameplayers(gamestate.players);
-    });
-
-    socket.on("reconnect_attempt", (n) => {
-      console.log("🔄 Reconnect attempt:", n);
-    });
-
-    socket.on("reconnect", (n) => {
-      console.log("✅ Reconnected after", n, "tries");
-
-      // Ask server to restore game state
-      socket.emit("reconnectRoom", { roomId: roomid });
-    });
-
-    socket.on("updateGame", (game) => {
-      console.log("🎮 Game state synced:", game);
     });
 
     // Handle connection

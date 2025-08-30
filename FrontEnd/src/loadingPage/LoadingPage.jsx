@@ -2,17 +2,20 @@ import React, { useEffect, useState } from 'react'
 import { useParams,useNavigate } from 'react-router-dom'
 import {  toast } from 'react-toastify';
 import netflixloader from './LoadingAssests/netflixloader.mp4'
-import socket from '../../socket.js'
+import {getSocket} from '../../socket'
 import './LoadingPage.css'
 
 const LoadingPage = () => {
   const {roomid,username}=useParams()
   const [showtadum,setshowtadum]=useState(false)
   const navigate=useNavigate()
+  const socket=getSocket()
   
   // initial join request to sever
   
 useEffect(()=>{
+socket.connect();
+
 socket.emit('join-game',{roomid,username})
 
 socket.on('roomfull',()=>{
