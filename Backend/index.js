@@ -100,6 +100,9 @@ io.on('connection', (socket) => {
     roomid,
     username
   }) => {
+    try{
+
+    
     let game = Games[roomid];
 
     if (!game) {
@@ -217,7 +220,13 @@ io.on('connection', (socket) => {
       io.to(roomid).emit("gamestarted");
       io.to(roomid).emit("Gamestate", game);
     }
-  });
+  }
+  catch(err){
+    console.error("Join-room error:", err);
+  }
+}
+
+);
   socket.on('requestInitialGamestate', (roomid) => {
     io.to(roomid).emit('Gamestate', Games[roomid])
     console.log("This is game" + Games[roomid]) //sending gamesate to Gamepage
