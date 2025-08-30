@@ -9,7 +9,7 @@ const LoadingPage = () => {
   const {roomid,username}=useParams()
   const [showtadum,setshowtadum]=useState(false)
   const navigate=useNavigate()
-  const socket=getSocket()
+
   
   // initial join request to sever
   
