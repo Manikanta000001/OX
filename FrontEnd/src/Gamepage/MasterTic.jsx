@@ -111,7 +111,7 @@ const MasterTic = () => {
 
       if (savedUsername && savedRoom) {
         console.log("join using connect!");
-        socket.emit("join-room", {
+        socket.emit("join-game", {
           username: savedUsername,
           room: savedRoom,
         });
