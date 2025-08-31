@@ -114,31 +114,19 @@ const MasterTic = () => {
           username: savedUsername,
           roomid: savedRoom,
         });
+        username=savedUsername;
+        toast.info("Reconnection ayyav chud")
       }
 
       // Request game state sync on connect/reconnect
     });
-    socket.on("reconnect", () => {
-      console.log("reconnected to server");
-
-      const savedUsername = localStorage.getItem("oxduel_username");
-      const savedRoom = localStorage.getItem("oxduel_room");
-
-      if (savedUsername && savedRoom) {
-        console.log("joined using reconnect");
-        socket.emit("join-room", {
-          username: savedUsername,
-          room: savedRoom,
-        });
-      }
-
-      // Request game state sync on connect/reconnect
-    });
+   
 
     socket.on("disconnect", (reason) => {
       console.log("Disconnected:", reason);
       // Show a message to the player, e.g., "Connection lost, reconnecting..."
-      toast.info(`Anna disconneted !`)
+      username="LOW NETWORK"
+      toast.info(`Anna net slow !`)
     });
 
     socket.on("Gamestate", (gamestate) => {

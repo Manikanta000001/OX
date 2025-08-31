@@ -204,7 +204,7 @@ io.on('connection', (socket) => {
         game.players.push(player);
       }
       console.log("After Push:")
-      console.log(game.player)
+      console.log(game.players)
 
       await GameModel.findOneAndUpdate({
         roomId: roomid
