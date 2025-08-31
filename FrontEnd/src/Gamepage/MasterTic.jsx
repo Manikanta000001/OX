@@ -112,7 +112,7 @@ const MasterTic = () => {
         console.log("join using connect!");
         socket.emit("join-game", {
           username: savedUsername,
-          room: savedRoom,
+          roomid: savedRoom,
         });
       }
 
