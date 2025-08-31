@@ -19,7 +19,7 @@ const tileclicksound = new Audio(tileclickasset);
 tileclicksound.volume = 0.3;
 
 const MasterTic = () => {
-  const { roomid, username } = useParams();
+  let { roomid, username } = useParams();
   const [boards, setboards] = useState([]);
   const [currentplayer, setcurrentplayer] = useState("X");
   const [activeBoard, setactiveBoard] = useState(null);
