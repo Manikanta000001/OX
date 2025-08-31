@@ -142,6 +142,8 @@ const MasterTic = () => {
     });
 
     socket.on("Gamestate", (gamestate) => {
+
+      console.log("Got the game state!!")
       setboards(gamestate.boards);
       setcurrentplayer(gamestate.currentplayer);
       setactiveBoard(gamestate.activeBoard);

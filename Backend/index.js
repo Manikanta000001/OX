@@ -101,7 +101,8 @@ io.on('connection', (socket) => {
     username
   }) => {
     try{
-
+ 
+      console.log("join room requested "+roomid+" "+username)
     
     let game = Games[roomid];
 
@@ -202,6 +203,8 @@ io.on('connection', (socket) => {
         };
         game.players.push(player);
       }
+      console.log("After Push:")
+      console.log(game.player)
 
       await GameModel.findOneAndUpdate({
         roomId: roomid
@@ -219,6 +222,7 @@ io.on('connection', (socket) => {
     if (game.players.filter(p => p.status === "connected").length === 2) {
       io.to(roomid).emit("gamestarted");
       io.to(roomid).emit("Gamestate", game);
+      console.log("Gamestate Emitted!!")
     }
   }
   catch(err){
