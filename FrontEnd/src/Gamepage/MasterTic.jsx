@@ -202,6 +202,8 @@ const MasterTic = () => {
       socket.off("rematchAccepted");
       socket.off("rematchRejected");
       socket.off("playerdisconnected");
+      socket.off("disconnect");
+      socket.off("connect");
     };
   }, [navigate]);
 
