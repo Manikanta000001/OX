@@ -20,9 +20,16 @@ const io = new Server(server, {
 })
 mongoose.connect('mongodb+srv://Manikanta:Manikanta950@cluster0.cnqw0pm.mongodb.net/Users_emp?retryWrites=true&w=majority&appName=Cluster0').then(()=>console.log("connetected"));
 // Games object to store gamestates with respective room ids
-app.get('/', (req, res) => {
-  res.send("Deployed pedhamanishi")
-})
+
+app.get("/", (req, res) => {
+  const userAgent = req.headers["user-agent"];
+  if (userAgent && userAgent.includes("UptimeRobot")) {
+    console.log("Pinged by UptimeRobot at:", new Date().toISOString());
+    res.send("Pinged by UptimeRobot at:", new Date().toISOString())
+  }
+  res.json({ status: "ok" });
+});
+
 let Games = {};
 
 io.on('connection', (socket) => {
