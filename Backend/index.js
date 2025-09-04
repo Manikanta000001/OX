@@ -96,83 +96,269 @@ io.on('connection', (socket) => {
   // })
 
   //modified here !
-  socket.on('join-game', async ({
-    roomid,
-    username
-  }) => {
-    try{
+//   socket.on('join-game', async ({
+//     roomid,
+//     username
+//   }) => {
+//     try{
  
-      console.log("join room requested "+roomid+" "+username)
+//       console.log("join room requested "+roomid+" "+username)
     
+//     let game = Games[roomid];
+
+//     if (!game) {
+//       // Check if there's a finished game in DB for this room
+//       let existingGame = await GameModel.findOne({
+//         roomId: roomid
+//       });
+
+//       if (existingGame && existingGame.status === "finished") {
+//         // Reuse/reset this document
+//         game = {
+//           players: [],
+//           boards: Array(9).fill(null).map(() => ({
+//             cells: Array(9).fill(null),
+//             winner: null
+//           })),
+//           currentplayer: 'X',
+//           activeBoard: null,
+//           bigwinner: null,
+//           strikeline: null
+//         };
+//         Games[roomid] = game;
+
+//         // First player is X
+//         game.players.push({
+//           id: socket.id,
+//           userNickname: username,
+//           symbol: "X",
+//           status: "connected"
+//         });
+
+//         await GameModel.findOneAndUpdate({
+//           roomId: roomid
+//         }, {
+//           $set: {
+//             players: game.players,
+//             boards: game.boards,
+//             currentplayer: game.currentplayer,
+//             activeBoard: game.activeBoard,
+//             bigwinner: game.bigwinner,
+//             strikeline: game.strikeline,
+//             status: "active" // reset game
+//           }
+//         });
+//       } else {
+//         // No finished doc → create new
+//         game = {
+//           players: [],
+//           boards: Array(9).fill(null).map(() => ({
+//             cells: Array(9).fill(null),
+//             winner: null
+//           })),
+//           currentplayer: 'X',
+//           activeBoard: null,
+//           bigwinner: null,
+//           strikeline: null
+//         };
+//         Games[roomid] = game;
+
+//         game.players.push({
+//           id: socket.id,
+//           userNickname: username,
+//           symbol: "X",
+//           status: "connected"
+//         });
+
+//         await GameModel.create({
+//           roomId: roomid,
+//           players: [game.players[0]],
+//           boards: game.boards,
+//           currentplayer: game.currentplayer,
+//           activeBoard: game.activeBoard,
+//           bigwinner: game.bigwinner,
+//           strikeline: game.strikeline,
+//           status: "active"
+//         });
+//       }
+//     } else {
+//       // Existing in-memory game → add or reconnect player
+//       if (game.players.length >= 2 &&
+//         !game.players.some(p => p.userNickname === username)) {
+//         socket.emit("roomfull");
+//         return;
+//       }
+
+//       let player = game.players.find(p => p.userNickname === username);
+//       if (player) {
+//         player.id = socket.id;
+//         player.status = "connected";
+//       } else {
+//         const symbol = game.players.some(p => p.symbol === "X") ? "O" : "X";
+//         player = {
+//           id: socket.id,
+//           userNickname: username,
+//           symbol,
+//           status: "connected"
+//         };
+//         game.players.push(player);
+//       }
+//       console.log("After Push:")
+//       console.log(game.players)
+
+//       await GameModel.findOneAndUpdate({
+//         roomId: roomid
+//       }, {
+//         $set: {
+//           players: game.players
+//         }
+//       });
+//     }
+
+//     socket.join(roomid);
+//     socket.data.roomid = roomid;
+//     socket.data.username = username;
+
+//     if (game.players.filter(p => p.status === "connected").length === 2) {
+//       io.to(roomid).emit("gamestarted");
+//       io.to(roomid).emit("Gamestate", game);
+//       console.log("Gamestate Emitted!!")
+//     }
+//   }
+//   catch(err){
+//     console.error("Join-room error:", err);
+//   }
+// }
+
+// );
+
+// socket.on('join-game', async ({ roomid, username }) => {
+//   try {
+//     console.log("join room requested", roomid, username);
+
+//     let game = Games[roomid];
+
+//     // 1. If not in memory, try to fetch from DB
+//     if (!game) {
+//       const existingGame = await GameModel.findOne({ roomId: roomid });
+
+//       if (existingGame) {
+//         // Rebuild game object in memory from DB
+//         game = {
+//           players: existingGame.players,
+//           boards: existingGame.boards,
+//           currentplayer: existingGame.currentplayer,
+//           activeBoard: existingGame.activeBoard,
+//           bigwinner: existingGame.bigwinner,
+//           strikeline: existingGame.strikeline,
+//         };
+//         Games[roomid] = game;
+//       }
+//     }
+
+//     // 2. If still no game, create fresh
+//     if (!game) {
+//       game = {
+//         players: [],
+//         boards: Array(9).fill(null).map(() => ({
+//           cells: Array(9).fill(null),
+//           winner: null,
+//         })),
+//         currentplayer: 'X',
+//         activeBoard: null,
+//         bigwinner: null,
+//         strikeline: null,
+//       };
+//       Games[roomid] = game;
+//     }
+
+//     // 3. Handle players
+//     let player = game.players.find(p => p.userNickname === username);
+
+//     if (player) {
+//       // Reconnecting player
+//       player.id = socket.id;
+//       player.status = "connected";
+//     } else {
+//       // New player
+//       if (game.players.length >= 2) {
+//         socket.emit("roomfull");
+//         return;
+//       }
+
+//       const symbol = game.players.some(p => p.symbol === "X") ? "O" : "X";
+//       player = {
+//         id: socket.id,
+//         userNickname: username,
+//         symbol,
+//         status: "connected",
+//       };
+//       game.players.push(player);
+//     }
+
+//     // 4. Persist game state in DB (use upsert)
+//     await GameModel.findOneAndUpdate(
+//       { roomId: roomid },
+//       {
+//         $set: {
+//           players: game.players,
+//           boards: game.boards,
+//           currentplayer: game.currentplayer,
+//           activeBoard: game.activeBoard,
+//           bigwinner: game.bigwinner,
+//           strikeline: game.strikeline,
+//           status: "active",
+//         },
+//       },
+//       { upsert: true }
+//     );
+
+//     // 5. Join socket room & set socket data
+//     socket.join(roomid);
+//     socket.data.roomid = roomid;
+//     socket.data.username = username;
+
+//     // 6. Start game if both connected
+//     if (game.players.filter(p => p.status === "connected").length === 2) {
+//       io.to(roomid).emit("gamestarted");
+//       io.to(roomid).emit("Gamestate", game);
+//       console.log("Gamestate Emitted!!");
+//     }
+
+//   } catch (err) {
+//     console.error("Join-game error:", err);
+//   }
+// });
+
+socket.on('join-game', async ({ roomid, username }) => {
+  try {
+    console.log("join room requested", roomid, username);
+
     let game = Games[roomid];
 
+    // 1. If not in memory, check DB
     if (!game) {
-      // Check if there's a finished game in DB for this room
-      let existingGame = await GameModel.findOne({
-        roomId: roomid
-      });
+      let existingGame = await GameModel.findOne({ roomId: roomid });
 
-      if (existingGame && existingGame.status === "finished") {
-        // Reuse/reset this document
+      if (!existingGame) {
+        // Create fresh game in memory
+        console.log("Createing a fresh room : "+roomid)
         game = {
           players: [],
           boards: Array(9).fill(null).map(() => ({
             cells: Array(9).fill(null),
-            winner: null
+            winner: null,
           })),
           currentplayer: 'X',
           activeBoard: null,
           bigwinner: null,
-          strikeline: null
+          strikeline: null,
         };
-        Games[roomid] = game;
 
-        // First player is X
-        game.players.push({
-          id: socket.id,
-          userNickname: username,
-          symbol: "X",
-          status: "connected"
-        });
-
-        await GameModel.findOneAndUpdate({
-          roomId: roomid
-        }, {
-          $set: {
-            players: game.players,
-            boards: game.boards,
-            currentplayer: game.currentplayer,
-            activeBoard: game.activeBoard,
-            bigwinner: game.bigwinner,
-            strikeline: game.strikeline,
-            status: "active" // reset game
-          }
-        });
-      } else {
-        // No finished doc → create new
-        game = {
-          players: [],
-          boards: Array(9).fill(null).map(() => ({
-            cells: Array(9).fill(null),
-            winner: null
-          })),
-          currentplayer: 'X',
-          activeBoard: null,
-          bigwinner: null,
-          strikeline: null
-        };
-        Games[roomid] = game;
-
-        game.players.push({
-          id: socket.id,
-          userNickname: username,
-          symbol: "X",
-          status: "connected"
-        });
-
+        // Persist new game
         await GameModel.create({
           roomId: roomid,
-          players: [game.players[0]],
+          players: game.players,
           boards: game.boards,
           currentplayer: game.currentplayer,
           activeBoard: game.activeBoard,
@@ -180,57 +366,69 @@ io.on('connection', (socket) => {
           strikeline: game.strikeline,
           status: "active"
         });
+
+      } else {
+        // Load from DB into memory
+        console.log("loading a  room : "+roomid)
+
+        game = {
+          players: existingGame.players,
+          boards: existingGame.boards,
+          currentplayer: existingGame.currentplayer,
+          activeBoard: existingGame.activeBoard,
+          bigwinner: existingGame.bigwinner,
+          strikeline: existingGame.strikeline,
+        };
       }
+
+      Games[roomid] = game;
+    }
+
+    // 2. Handle players
+    let player = game.players.find(p => p.userNickname === username);
+
+    if (player) {
+      // Reconnecting
+      player.id = socket.id;
+      player.status = "connected";
     } else {
-      // Existing in-memory game → add or reconnect player
-      if (game.players.length >= 2 &&
-        !game.players.some(p => p.userNickname === username)) {
+      if (game.players.length >= 2) {
         socket.emit("roomfull");
         return;
       }
 
-      let player = game.players.find(p => p.userNickname === username);
-      if (player) {
-        player.id = socket.id;
-        player.status = "connected";
-      } else {
-        const symbol = game.players.some(p => p.symbol === "X") ? "O" : "X";
-        player = {
-          id: socket.id,
-          userNickname: username,
-          symbol,
-          status: "connected"
-        };
-        game.players.push(player);
-      }
-      console.log("After Push:")
-      console.log(game.players)
-
-      await GameModel.findOneAndUpdate({
-        roomId: roomid
-      }, {
-        $set: {
-          players: game.players
-        }
-      });
+      const symbol = game.players.some(p => p.symbol === "X") ? "O" : "X";
+      player = {
+        id: socket.id,
+        userNickname: username,
+        symbol,
+        status: "connected",
+      };
+      game.players.push(player);
     }
 
+    // 3. Update DB only if already exists
+    await GameModel.findOneAndUpdate(
+      { roomId: roomid },
+    { $set: { players: game.players } }
+    );
+
+    // 4. Join socket room
     socket.join(roomid);
     socket.data.roomid = roomid;
     socket.data.username = username;
 
+    // 5. Start game if both connected
     if (game.players.filter(p => p.status === "connected").length === 2) {
       io.to(roomid).emit("gamestarted");
       io.to(roomid).emit("Gamestate", game);
-      console.log("Gamestate Emitted!!")
+      console.log("Gamestate Emitted!!");
     }
-  }
-  catch(err){
-    console.error("Join-room error:", err);
-  }
-}
 
-);
+  } catch (err) {
+    console.error("Join-game error:", err);
+  }
+});
   socket.on('requestInitialGamestate', (roomid) => {
     io.to(roomid).emit('Gamestate', Games[roomid])
     console.log("This is game" + Games[roomid]) //sending gamesate to Gamepage
