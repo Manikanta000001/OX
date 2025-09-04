@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
   const userAgent = req.headers["user-agent"];
   if (userAgent && userAgent.includes("UptimeRobot")) {
     console.log("Pinged by UptimeRobot at:", new Date().toISOString());
-    res.json("Pinged by UptimeRobot at:", new Date().toISOString())
+    
   }
   res.json({ status: "ok" });
 });
