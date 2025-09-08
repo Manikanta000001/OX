@@ -412,5 +412,52 @@ io.on('connection', (socket) => {
   })
 
 })
+async function saveMatchHistory(roomid, game) {
+  try {
+    if (game.historySaved) {
+      console.log("Game was already recorded ");
+      return;
+    }
+    const matchStatus = game.bigwinner ? "finished" : "uncompleted";
+
+    let winner = null;
+    if (game.bigwinner) {
+      winner = game.bigwinner;
+    } else {
+      // check if it's a tie (all boards filled and no bigwinner)
+      const allBoardsDecided = game.boards.every(b => b.winner !== null);
+      if (allBoardsDecided && !game.bigwinner) {
+        winner = "Tie";
+      }
+    }
+
+
+
+    const matchDoc = new MatchModel({
+      roomId: roomid,
+      players: game.players.map(p => ({
+        playerId: p.id,
+        userId: p.userId || null,
+        userNickname: p.userNickname,
+        symbol: p.symbol,
+        result: winner === "Tie" ?
+          "draw" : (winner === p.symbol ? "win" : "lose")
+      })),
+      boards: game.boards,
+      currentplayer: game.currentplayer,
+      activeBoard: game.activeBoard,
+      bigwinner: game.bigwinner,
+      strikeline: game.strikeline,
+      winner: winner,
+      status: matchStatus
+    });
+
+    await matchDoc.save();
+    game.historySaved = true;
+    console.log("✅ Match history saved for room:", roomid);
+  } catch (err) {
+    console.error("❌ Error saving match history:", err);
+  }
+}
 
 server.listen(PORT, () => console.log("server running on port ", PORT))
