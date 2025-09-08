@@ -21,6 +21,12 @@ function App() {
       navigate('/')
     }
   },[])
+  useEffect(() => {
+    // This runs only on the client after the component mounts
+    if (window.self !== window.top) {
+      document.body.classList.add("in-iframe");
+    }
+  }, []);
 
   return (
     <>
