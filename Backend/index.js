@@ -286,6 +286,7 @@ io.on('connection', (socket) => {
     game.activeBoard = null;
     game.bigwinner = null;
     game.strikeline = null;
+    game.historySaved = false;
 
     await GameModel.findOneAndUpdate({
       roomId: roomid
