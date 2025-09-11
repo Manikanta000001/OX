@@ -309,7 +309,7 @@ io.on('connection', (socket) => {
     roomid,
     emoji
   }) => {
-    
+
     // Broadcast to others in the same room
     socket.to(roomid).emit("receive-emoji", {
       emoji,
@@ -318,10 +318,14 @@ io.on('connection', (socket) => {
   });
 
   //someone rejected -- both navigated to homepage -- removes roomid
-  socket.on('rejectRematch', (roomid) => {
+  socket.on('rejectRematch',async (roomid) => {
     if (Games[roomid]) {
-      socket.to(roomid).emit('rematchRejected') //navigating the rejected person to homepage with notification
+      socket.to(roomid).emit('rematchRejected')
+       await GameModel.deleteOne({
+        roomId: roomid
+      }); //navigating the rejected person to homepage with notification
       delete Games[roomid]
+      console.log("Removing active room by rejectRematch")
     }
 
   })
