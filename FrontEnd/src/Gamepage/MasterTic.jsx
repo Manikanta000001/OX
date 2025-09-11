@@ -14,6 +14,8 @@ import Model from "./components/PopUpModel/model.jsx";
 import "./MasterTic.css";
 import socket from "../../socket";
 import useLocalStorage from "use-local-storage";
+import EmojiReactions from "./components/Emojis.jsx";
+
 
 const tileclicksound = new Audio(tileclickasset);
 tileclicksound.volume = 0.3;
@@ -268,6 +270,7 @@ const MasterTic = () => {
           playersymbol={playersymbol}
           strikeline={strikeline}
         />
+         <EmojiReactions roomid={roomid} />
       </div>
       <Model
         open={waitingforRematch}
