@@ -305,6 +305,18 @@ io.on('connection', (socket) => {
 
   })
 
+    socket.on("send-emoji", ({
+    roomid,
+    emoji
+  }) => {
+    
+    // Broadcast to others in the same room
+    socket.to(roomid).emit("receive-emoji", {
+      emoji,
+      from: socket.id
+    });
+  });
+
   //someone rejected -- both navigated to homepage -- removes roomid
   socket.on('rejectRematch', (roomid) => {
     if (Games[roomid]) {
